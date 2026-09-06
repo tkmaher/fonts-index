@@ -23,7 +23,6 @@ export type BubbleSortType = "classification" | "style_tags" | "subsets" | "cate
 const CLASSIFICATION_FILTER: FontFilter = { bubbleSort: "classification", page: 1 };
 const SUBSETS_FILTER: FontFilter = { bubbleSort: "subsets", page: 1 };
 const STYLES_FILTER: FontFilter = { bubbleSort: "style_tags", page: 1 };
-
 const CATEGORY_FILTER: FontFilter = { bubbleSort: "categories", page: 1 };
 
 const INIT_ROW_FILTER: FontFilter = { page: 1, sortBy: "popHL" };
@@ -42,9 +41,7 @@ export default function FontSearchForm() {
   const [ bubbleSort, setBubbleSort ] = useState<BubbleSortType>("classification");
 
   const [ searchingFonts, setSearchingFonts ] = useState(true);
-
   const [ category, setCategory ] = useState<string>("");
-
   const [ lastTag, setLastTag ] = useState<{ type: BubbleSortType; label: string } | null>(null);
 
   // --- paging / view ---
@@ -88,7 +85,7 @@ export default function FontSearchForm() {
   );
 
   const submitRow = (page: number) => {
-    const result = 
+    const result =
       searchingFonts ?
       Schema.decodeUnknownEither(FontFilter)({ ...buildBaseFilter(), page })
       : Schema.decodeUnknownEither(SiteFilter)({ ...buildBaseSiteFilter(), page });
@@ -111,7 +108,7 @@ export default function FontSearchForm() {
       removeTag?.type === "classification" ? "" : classification;
     const newCategory =
       removeTag?.type === "categories" ? "" : category;
-  
+
     const result = searchingFonts
       ? Schema.decodeUnknownEither(FontFilter)({
           searchString,
@@ -132,12 +129,12 @@ export default function FontSearchForm() {
           page: 1,
           bubbleSort: "categories",
         });
-  
+
     if (result._tag === "Left") {
       reportDecodeError(result.left);
       return false;
     }
-  
+
     setFormError(null);
     if (removeTag) {
       if (removeTag.type === "style_tags") setStyles(newStyles);
@@ -149,7 +146,7 @@ export default function FontSearchForm() {
     setBubbleParams(result.right);
     return true;
   };
-  
+
   const submit = (paging?: 'next' | 'back') => {
     if (viewMode) {
       setRowParams(null);
@@ -166,7 +163,7 @@ export default function FontSearchForm() {
     if (switchingToBubble && bubbleParams === null) {
       submitBubble();
     } else if (!switchingToBubble && rowParams === null) {
-      submitRow(pageIn);
+      submitRow(1);
     }
     setViewMode(switchingToBubble);
   };
@@ -203,19 +200,25 @@ export default function FontSearchForm() {
     [categoryResults]
   );
 
-  const queryFull = `
-    ${classification ? 'classification: ' + classification + ';' : ''}
-    ${styles.length > 0 ? 'styles: ' + styles.join(styleOr ? ' or ' : ' and ') + ';' : ''}
-    ${subsets.length > 0 ? 'subsets: ' + subsets.join(subsetOr ? ' or ' : ' and ') + ';' : ''}
-    ${searchString.length > 0 ? 'contains ' + searchString + ' in ' + searchVal + ';' : ''}
-    ${'ordered by ' + sortVal}
-  `;
+  const queryFull = useMemo(
+    () => [
+      classification && `classification: ${classification};`,
+      styles.length > 0 && `styles: ${styles.join(styleOr ? ' or ' : ' and ')};`,
+      subsets.length > 0 && `subsets: ${subsets.join(subsetOr ? ' or ' : ' and ')};`,
+      searchString.length > 0 && `contains ${searchString} in ${searchVal};`,
+      `ordered by ${sortVal}`,
+    ].filter(Boolean).join(' '),
+    [classification, styles, styleOr, subsets, subsetOr, searchString, searchVal, sortVal]
+  );
 
-  const queryFullSites = `
-    ${category ? 'category: ' + category + ';' : ''}
-    ${searchString.length > 0 ? 'contains ' + searchString + ';'  : ''}
-    ${'ordered by ' + sortVal}
-  `;
+  const queryFullSites = useMemo(
+    () => [
+      category && `category: ${category};`,
+      searchString.length > 0 && `contains ${searchString};`,
+      `ordered by ${sortVal}`,
+    ].filter(Boolean).join(' '),
+    [category, searchString, sortVal]
+  );
 
   const handleSortSelect = (selected: SortValType) => {
     setSortVal(selected);
@@ -228,7 +231,10 @@ export default function FontSearchForm() {
     }
   };
 
-  const clearFilters = useCallback(() => {
+  // `mode` lets callers reset toward a target mode (e.g. right before a font/site
+  // switch) instead of the mode currently in state, avoiding a second corrective
+  // setBubbleSort call afterward.
+  const clearFilters = useCallback((mode: boolean = searchingFonts) => {
     setSearchString("");
     setSearchVal("title+desc");
     setClassification("");
@@ -239,10 +245,9 @@ export default function FontSearchForm() {
     setSortVal("popularity, desc");
     setSortBy("popHL");
     setCategory("");
-    setLastTag(null); // ← new
-  }, []);
-  
-  
+    setLastTag(null);
+    setBubbleSort(mode ? "classification" : "categories");
+  }, [searchingFonts]);
 
   const formStateRef = useRef({
     searchString,
@@ -255,7 +260,7 @@ export default function FontSearchForm() {
     searchField,
     category,
   });
-  
+
   useEffect(() => {
     formStateRef.current = {
       searchString,
@@ -270,26 +275,32 @@ export default function FontSearchForm() {
     };
   });
 
-
-
   const tagCallback = useCallback(
     (data: TagType, clearBefore: boolean) => {
       const state = formStateRef.current;
-      clearBefore && clearFilters();
+      if (data.type == "style_tags" && state.styles.includes(data.label))
+        return;
+      if (data.type == "subsets" && state.subsets.includes(data.label))
+        return;
+
+      if (clearBefore) {
+        clearFilters(true);
+        setViewMode(false);
+      }
       setSearchingFonts(true);
-  
-      const newClassification = /* unchanged */
+
+      const newClassification =
         data.type === "classification" ? data.label : clearBefore ? "" : state.classification;
       const newStyles =
-        data.type === "style_tags" ? [...state.styles, data.label] : clearBefore ? [] : state.styles;
+        data.type === "style_tags" ? [data.label] : clearBefore ? [] : state.styles;
       const newSubsets =
-        data.type === "subsets" ? [...state.subsets, data.label] : clearBefore ? [] : state.subsets;
-  
+        data.type === "subsets" ? [data.label] : clearBefore ? [] : state.subsets;
+
       setClassification(newClassification);
       setStyles(newStyles);
       setSubsets(newSubsets);
       setLastTag({ type: data.type as BubbleSortType, label: data.label });
-  
+
       const result = Schema.decodeUnknownEither(FontFilter)({
         searchString: clearBefore ? "" : state.searchString,
         classification: newClassification,
@@ -301,79 +312,80 @@ export default function FontSearchForm() {
         searchField: clearBefore ? "td" : state.searchField,
         page: 1,
       });
-  
+
       if (result._tag === "Left") {
         reportDecodeError(result.left);
         return;
       }
       setFormError(null);
       setBubbleParams(null);
-      // clearBefore && setViewMode(false);
       setPageIn(1);
       setRowParams(result.right);
     },
     [clearFilters, reportDecodeError]
   );
-  
+
   const catCallback = useCallback(
     (cat: string, clearBefore: boolean) => {
       const state = formStateRef.current;
-      clearBefore && clearFilters();
+
+      if (clearBefore) {
+        clearFilters(false);
+        setViewMode(false);
+      }
       setSearchingFonts(false);
       setCategory(cat);
       setLastTag({ type: "categories", label: cat });
-  
+
       const result = Schema.decodeUnknownEither(SiteFilter)({
         searchString: clearBefore ? "" : state.searchString,
         category: cat,
         sortBy: clearBefore ? "popHL" : state.sortBy,
         page: 1,
       });
-  
+
       if (result._tag === "Left") {
         reportDecodeError(result.left);
         return;
       }
       setFormError(null);
       setBubbleParams(null);
-      // clearBefore && setViewMode(false);
       setPageIn(1);
       setRowParams(result.right);
     },
     [clearFilters, reportDecodeError]
   );
 
-  const handleGraphSelect = useCallback(
-    async (row: FontRow | SiteRow) => setSelectedResult(row),
-    []
-  );
-
   const handleSearchModeToggle = useCallback(() => {
     const next = !searchingFonts;
     setSearchingFonts(next);
-    clearFilters();
+    clearFilters(next);
     setPageIn(1);
-    setBubbleSort(searchingFonts ? "categories" : "classification");
     setRowParams(INIT_ROW_FILTER);
     setBubbleParams(next ? CLASSIFICATION_FILTER : CATEGORY_FILTER);
-    // setBubbleParams(null);
-    // setViewMode(true);
   }, [searchingFonts, clearFilters]);
 
   const graphData = bubbleParams ? bubbleResults : results;
 
+  // Skip the initial mount (INIT_ROW_FILTER already covers it) and only react
+  // to bubbleSort changes while the bubble/graph view is actually showing —
+  // otherwise this would clobber params that mode-switching just set.
+  const isFirstRender = useRef(true);
   useEffect(() => {
-    submit();
-
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      return;
+    }
+    if (viewMode) submitBubble();
   }, [bubbleSort]);
 
   return (
     <>
       <div className='right-stack'>
         <div className='search-row'>
-          <button 
-            type="button" 
-            className='text submit' 
+          <button
+            type="button"
+            className='text submit'
             onClick={handleSearchModeToggle}
           >
             {searchingFonts ? "(browsing fonts)" : "(browsing sites)"}
@@ -384,7 +396,7 @@ export default function FontSearchForm() {
           submit();
         }}>
 
-          {searchingFonts ? 
+          {searchingFonts ?
             <>
               <div className='search-col'>
                 <div className='text'>classification</div>
@@ -417,7 +429,7 @@ export default function FontSearchForm() {
                   str2="exclusive"
                 />}
               </div>
-            </> : 
+            </> :
             <div className='search-col'>
               <div className='text'>category</div>
               <div className='search-row'>
@@ -472,6 +484,7 @@ export default function FontSearchForm() {
           </div>
 
           {formError && <p>{formError}</p>}
+          <div className='text' style={{flexGrow: 1, width: '100%'}}></div>
         </form>
 
         <div className='search-col'>
@@ -482,15 +495,14 @@ export default function FontSearchForm() {
             <button type="submit" className='text submit' disabled={isFetching} onClick={() => submit()}>
               search
             </button>
-            <button type="button" className='text' disabled={isFetching} onClick={clearFilters}>
+            <button type="button" className='text' disabled={isFetching} onClick={() => clearFilters()}>
               clear
             </button>
-
           </div>
           {isError && (
             <div>
-              <button 
-                className='text' 
+              <button
+                className='text'
                 style={{pointerEvents: 'none'}}
               >
                 {error instanceof Error ? error.message : "Something went wrong."}
@@ -501,79 +513,73 @@ export default function FontSearchForm() {
         </div>
       </div>
       <div className='left-container'>
-
         <div className='left-split'>
           <div className={`left-stack ${selectedResult ? 'left-split-small' : 'left-split-large'}`}>
-          <div className='search-row bubble-header' 
-            style={{
-              flexGrow: 1,
-              marginRight: selectedResult ? '1px' : '0px',
-            }}
-          >
-            <button 
-              type='button' 
-              className='text' 
-              onClick={handleViewSwitch}
-
+            <div className='search-row bubble-header'
+              style={{
+                marginRight: selectedResult ? '1px' : '0px',
+              }}
             >
-              (switch view)
-            </button>
-            {viewMode &&
-              <Dropdown 
-                title={bubbleSort}
-                value={bubbleSort}
-                options={searchingFonts ? ["classification", "style_tags", "subsets"] : ["categories"]}
-                setterCallback={setBubbleSort}
-                removeNegate
-                removeRemove
-              />
-            }
-          </div>
-            {!viewMode
-              ? (results?._tag === "RowFontResult" || results?._tag == "RowSiteResult") && (
-                  <div className='boxes'>
-                    {results.data.map((row, i) => (
-                      <Block 
-                        row={row} 
-                        index={i} 
-                        setter={async () => setSelectedResult(row)} 
-                        selected={
-                          selectedResult == row
-                        }
-                        key={i} 
-                      />
-                    ))}
-                    {results.data.length == 0 && (
-                      <div className='search-row'>
-                          no results found
-                      </div>)}
-                  </div>
+              <button
+                type='button'
+                className='text'
+                onClick={handleViewSwitch}
+              >
+                (switch view)
+              </button>
+              {(viewMode && searchingFonts) &&
+                <Dropdown
+                  title={bubbleSort}
+                  value={bubbleSort}
+                  options={["classification", "style_tags", "subsets"]}
+                  setterCallback={setBubbleSort}
+                  removeNegate
+                  removeRemove
+                />
+              }
+            </div>
+            {isFetching ?
+              <div className='text fillbox'/> :
+              !viewMode
+                ? (results?._tag === "RowFontResult" || results?._tag == "RowSiteResult") && (
+                    <div className='boxes'>
+                      {results.data.map((row, i) => (
+                        <Block
+                          row={row}
+                          index={i}
+                          setter={async () => setSelectedResult(row)}
+                          selected={selectedResult == row}
+                          key={i}
+                        />
+                      ))}
+                      {results.data.length == 0 && (
+                        <div className='search-row'>
+                            no results found
+                        </div>)}
+                    </div>
+                  )
+                  : viewMode && (
+                    <CytoscapeGraph
+                      fontdata={graphData}
+                      tagCallback={tagCallback}
+                      catCallback={catCallback}
+                      filter={bubbleSort}
+                      setter={setSelectedResult}
+                      onBack={() => submitBubble(lastTag ?? undefined)}
+                    />
                 )
-                : viewMode && (
-                  <CytoscapeGraph
-                    fontdata={graphData}
-                    tagCallback={tagCallback}
-                    catCallback={catCallback}
-                    filter={bubbleSort}
-                    setter={handleGraphSelect}
-                    onBack={() => submitBubble(lastTag ?? undefined)}
-                  />
-                
-             )
-            }
+              }
             {!viewMode && <Pagination submit={submit} results={results} pageIn={pageIn} disabled={isFetching}/>}
           </div>
-          {selectedResult && 
-            <DisplayNav 
-              current={selectedResult} 
+          {selectedResult &&
+            <DisplayNav
+              current={selectedResult}
               tagCallback={tagCallback}
               catCallback={catCallback}
               closeInspector={() => setSelectedResult(null)}
             />
           }
         </div>
-
-
       </div>
     </>
   );

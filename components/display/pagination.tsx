@@ -46,9 +46,24 @@ export default function Pagination({
                 next
               </button>
             </> 
-          : <div>
-                loading...
-            </div>
+          : <>
+                <>
+                  <button 
+                    className='text' 
+                    style={{opacity: 0.5}}
+                  >
+                    back
+                  </button>
+                  <div className='text' style={{flexGrow: 1}}/>
+                  
+                  <button 
+                    className='text'
+                    style={{opacity: 0.5}}
+                  >
+                    next
+                  </button>
+                </> 
+            </>
           }
         </div>
     )

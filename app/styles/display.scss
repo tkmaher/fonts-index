@@ -35,7 +35,6 @@
         flex-direction: row;
         flex-wrap: wrap;
         gap: 1px;
-        flex-grow: 1;
     }
 }
 
@@ -150,5 +149,11 @@
     .dropdown-header {
         flex-grow: 0;
         flex-shrink: 1;
+        flex-basis: 50%;
     }
+}
+
+.fillbox {
+    flex-grow: 1;
+    width: calc(100% - 4px) !important;
 }

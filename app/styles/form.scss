@@ -80,6 +80,17 @@
         }
     }
 
+    .dd-item {
+        background-color: v.$hover1;
+        @media (hover: hover) {
+            &:hover {
+                background-color: v.$hover2;
+            }
+        }
+        &:active {
+            background-color: v.$active1;
+        }
+    }
 }
 
 button {
@@ -166,10 +177,10 @@ button {
 
 input[type=text] {
     height: 14px;
-    background: transparent;
+    background: v.$highlight;
     border: none;
     margin: 0;
-    padding: 0;
+    padding: 0 1px;
     border: 1px solid v.$highlight;
     font-size: 12px;
     flex-grow: 1;

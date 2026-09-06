@@ -55,6 +55,17 @@ body {
   border: 1px solid v.$highlight;
   user-select: none;
   min-height: 14px;
+  padding-left: 1px;
+  padding-right: 1px;
+}
+
+.nopad {
+  padding: 0 !important;
+}
+
+.text-full {
+  width: 100%;
+  height: 100%;
 }
 
 .rounder {
@@ -94,8 +105,9 @@ body {
   display: flex;
   flex-direction: column;
   gap: 1px;
+  max-width: calc(100dvw - v.$left-width - 3px);
   form {
-    width: calc(30dvw - 3px);
+    width: calc(100%);
     overflow-x: hidden;
     overflow-y: auto;
     height: 100%;
@@ -141,10 +153,10 @@ body {
   .about-box {
     opacity: 1;
     position: absolute;
-    width: 70%;
-    min-width: 500px;
+    width: 40%;
+    min-height: 500px;
     max-width: 100%;
-    height: 50%;
+    height: 70%;
     background-color: v.$highlight;
     overflow-y: auto;
   }

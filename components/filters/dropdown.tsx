@@ -143,7 +143,7 @@ export function Dropdown({
                     ¬
                 </button>
             )}
-            <div className="dropdown text" onClick={() => setOpen(!open)} ref={divRef}>
+            <div className="dropdown" onClick={() => setOpen(!open)} ref={divRef}>
                 <div className={`${open ? 'dropdown-header dropdown-header-open' : 'dropdown-header'}`}>
                     {open ? (
                         <input
@@ -158,7 +158,7 @@ export function Dropdown({
                         <button className="text" type="button">{label}</button>
                     )}
                     <button
-                        className={`text ${open ? 'button-img-rev' : 'button-img'}`}
+                        className={`text nopad ${open ? 'button-img-rev' : 'button-img'}`}
                         type="button"
                         onClick={(e) => {
                             e.stopPropagation();
@@ -178,7 +178,7 @@ export function Dropdown({
                                     setterCallback(negate ? '!' + option : option);
                                     setOpen(false);
                                 }}
-                                className={option === selected ? 'button-not-rev' : ''}
+                                className={option === selected ? 'dd-item button-not-rev' : 'dd-item'}
                             >
                                 {option}
                             </button>

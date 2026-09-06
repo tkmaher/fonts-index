@@ -59,6 +59,7 @@ function SiteInspector({
                         </div>
                     ))
                 )}
+                <div className="text fillbox"/>
             </div>
         </>
     );
@@ -179,6 +180,7 @@ function FontInspector({
                         <button type="button" onClick={() => refetch()}>Retry</button>
                     </div>
                 }
+                <div className="text fillbox"/>
             </div>
 
             <Pagination submit={submit} results={results} pageIn={page} disabled={isFetching} />

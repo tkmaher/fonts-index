@@ -48,6 +48,7 @@ export function Header() {
                         ))}
                     </div>
                 </div>
+                <div className="text" style={{flexGrow: 1}}></div>
                 <div className="header-row">
                     <div className="text">
                         Statistics
