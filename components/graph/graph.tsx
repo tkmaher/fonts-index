@@ -275,7 +275,6 @@ export default function CytoscapeGraph({
             'text-max-width': 'data(textMaxWidth)',
             'overlay-opacity': 0,
             'transition-property': 'opacity, background-opacity',
-            'transition-timing-function': 'ease' as 'ease',
             'font-family': 'CommitMono, monospace',
           },
         },

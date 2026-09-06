@@ -158,3 +158,36 @@
     flex-grow: 1;
     width: calc(100% - 4px) !important;
 }
+
+@media (max-width: 768px) {
+    .left-stack {
+        width: 100%;
+    }
+
+    .font-block {
+        width: calc(100vw / 3 - 2px);
+        max-width: calc(100vw / 3 - 2px);
+        height: calc(100vw / 3 - 2px);
+    }
+
+    .left-split {
+        gap: 1px;
+    }
+    
+    .left-split-small {
+        .font-block {
+            width: calc(30dvw - 2px);
+            max-width: calc(30dvw - 2px);
+            height: calc(30dvw - 2px);
+        }
+    }
+
+    .display-screen {
+        width: 70dvw;
+    }
+
+    .bubble-header {
+        flex-direction: column;
+        gap: 1px;
+    }
+}
