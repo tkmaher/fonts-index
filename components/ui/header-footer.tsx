@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import About from "./about";
 
 export function Header() {
-    const header = "Fonts-Index";
+    const header = "fonts index";
     const a = 2;
     const p = 500;
     const [ count, setCount ] = useState(0);
