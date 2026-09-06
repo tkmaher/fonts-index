@@ -1,10 +1,8 @@
 import type { Metadata } from "next";
 import "@/app/styles/globals.scss";
+import { staticMetadata } from "@/app/metadata";
 
-export const metadata: Metadata = {
-  title: "Fonts Index",
-  description: "By otherseas1.",
-};
+export const metadata: Metadata = staticMetadata;
 
 export default function RootLayout({
   children,
