@@ -2,8 +2,8 @@ import { keepPreviousData, useQuery } from "@tanstack/react-query";
 
 import { Duration, Effect, Schedule, Schema } from "effect";
 import { SiteResult, type SiteFilter } from "@/types/schema";
-import { describeError } from "./error";
-import { NetworkError, HttpError } from "@/types/error";
+import { describeError } from "@/components/effects/error";
+import { NetworkError, HttpError, ErrorResponse } from "@/types/error";
 
 const SITES_API_URL = "https://fonts-index-api.tomaszkkmaher.workers.dev/api/sites";
 
@@ -67,7 +67,7 @@ const fetchSitesEffect = (filter: SiteFilter) => Effect.gen(function* () {
 
 export const runFetchSites = (params: SiteFilter) => Effect.runPromise(
   fetchSitesEffect(params).pipe(Effect.mapError(
-    (error: unknown) => new Error(describeError(error))
+    (error: unknown) => new Error(describeError(error as ErrorResponse))
   )),
 );
 

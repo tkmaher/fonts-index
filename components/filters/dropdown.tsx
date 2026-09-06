@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 let idCounter = 0;
 
@@ -104,7 +104,7 @@ export function Dropdown({
     const inputRef = useRef<HTMLInputElement>(null);
 
     useEffect(() => {
-        function handleClickOutside(event: MouseEvent) {
+        function handleClickOutside(event: any) {
           if (divRef.current && !divRef.current.contains(event.target)) {
             setOpen(false); 
           }

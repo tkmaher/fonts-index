@@ -275,7 +275,6 @@ export default function CytoscapeGraph({
             'text-max-width': 'data(textMaxWidth)',
             'overlay-opacity': 0,
             'transition-property': 'opacity, background-opacity',
-            'transition-duration': '0.15s',
             'transition-timing-function': 'ease' as 'ease',
             'font-family': 'CommitMono, monospace',
           },
@@ -285,7 +284,6 @@ export default function CytoscapeGraph({
           selector: 'node.hover',
           style: {
             'background-opacity': 0.5,
-            cursor: 'pointer',
           },
         },
       ],
