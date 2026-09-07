@@ -252,10 +252,12 @@ export function Dropdown({
                 return;
             }
 
-            selectOption(
-                filteredOptions[highlightedIndex]
-            );
-
+            if (filteredOptions[highlightedIndex] == value && !removeRemove) {
+                
+                setterCallback("");
+            } else {
+                selectOption(filteredOptions[highlightedIndex]);
+            }
             setOpen(false);
 
             return;
