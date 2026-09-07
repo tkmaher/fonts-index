@@ -389,6 +389,7 @@ export default function FontSearchForm() {
             type="button"
             className='text submit'
             onClick={handleSearchModeToggle}
+            aria-label={`Switch search mode. Currently browsing ${searchingFonts ? 'fonts' : 'sites'}`}
           >
             {searchingFonts ? "(browsing fonts)" : "(browsing sites)"}
           </button>
@@ -446,7 +447,7 @@ export default function FontSearchForm() {
           }
           <div className='search-col'>
             <div className='search-row'>
-            <div className='text'>
+            <div className='text' style={{width: '100%'}}>
               filter
             </div>
             {searchingFonts && <Dropdown

@@ -76,7 +76,7 @@
 
 .left-split-small {
     width: calc(
-        v.$left-width / var(--block-var) * (var(--block-var) - 2)
+        (v.$left-width / var(--block-var) * (var(--block-var) - 2)) - 1px
     );
 
     .boxes {
