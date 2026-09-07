@@ -22,8 +22,9 @@
     display: flex;
     flex-direction: row;
     min-height: 0;
+    gap: 1px;
 }
-  
+
 .left-stack {
     width: v.$left-width;
     display: flex;
@@ -33,46 +34,57 @@
 
     .boxes {
         overflow-y: auto;
-        display: flex;
-        flex-direction: row;
-        flex-wrap: wrap;
+        display: grid;
+        grid-template-columns: repeat(var(--block-var), 1fr);
         gap: 1px;
-        overflow-y: auto;
+    }
+}
+
+.font-block {
+    width: 100%;
+    aspect-ratio: 1;
+    min-width: 0;
+    background-color: transparent;
+    overflow-wrap: anywhere;
+    word-break: break-all;
+
+    button {
+        width: 100%;
+        height: 100%;
+        min-width: 0;
+        display: flex;
+        align-items: flex-start;
+        justify-content: flex-start;
+        text-align: left;
+        overflow-wrap: anywhere;
+        word-break: break-all;
     }
 }
 
 .display-screen {
-    width: calc((v.$left-width / (var(--block-var)) * 2));
+    width: calc(v.$left-width / var(--block-var) * 2);
     flex-shrink: 0;
     max-height: 100%;
     display: flex;
     flex-direction: column;
     gap: 1px;
+
     .pagination {
         width: 100% !important;
     }
 }
 
 .left-split-small {
-    width: calc((v.$left-width / (var(--block-var)) * calc(var(--block-var) - 2)));
-}
+    width: calc(
+        v.$left-width / var(--block-var) * (var(--block-var) - 2)
+    );
 
-.font-block {
-    width: calc(v.$left-width / var(--block-var) - 1px);
-    max-width: calc(v.$left-width / var(--block-var) - 1px);
-    height: calc(v.$left-width / var(--block-var) - 1px);
-    display: inline-block;
-    background-color: transparent;
-
-    button {
-        width: 100%;
-        height: 100%;
-        display: flex;
-        align-items: flex-start;
-        justify-content: flex-start;
-        text-align: left;
+    .boxes {
+        grid-template-columns: repeat(
+            calc(var(--block-var) - 2),
+            1fr
+        );
     }
-
 }
 
 .font-inspector {
@@ -84,7 +96,9 @@
     flex-direction: column;
     gap: 1px;
     overflow-x: hidden;
+    overflow-y: auto;
     flex-shrink: 0;
+
     .tag-map {
         display: flex;
         flex-wrap: wrap;
@@ -93,11 +107,13 @@
         gap: 1px;
         user-select: none;
         padding: 1px;
+
         button {
             border: none !important;
             padding: 0 1px;
         }
     }
+
     .inspector-title {
         font-size: 18px;
         font-style: italic;
@@ -109,15 +125,17 @@
         display: flex;
         flex-direction: row;
         gap: 1px;
+
         & > :first-child {
             flex-grow: 1;
-
         }
+
         .img-btn {
             height: 21.5px;
             width: 21.5px;
         }
     }
+
     .inspector-desc {
         flex-grow: 1;
         width: 100%;
@@ -128,8 +146,6 @@
         opacity: 0.5;
         width: 100%;
     }
-
-    overflow-y: auto;
 }
 
 .inspector-sites {
@@ -139,6 +155,7 @@
     display: flex;
     gap: 1px;
     flex-direction: column;
+
     .text {
         width: 100%;
         text-align: left;
@@ -150,6 +167,7 @@
         flex-grow: 1;
         width: 100% !important;
     }
+
     .dropdown-header {
         flex-grow: 0;
         flex-shrink: 1;
@@ -162,32 +180,43 @@
     width: calc(100% - 4px) !important;
 }
 
-
 @media (max-width: 768px) {
     .left-stack {
         width: 100%;
     }
 
     .left-stack.left-split-small {
-        width: 30dvw;
+        width: calc(30vw - 3px)
+        ;
     }
 
-    .font-block {
-        width: calc(100vw / 3 - 2px);
-        max-width: calc(100vw / 3 - 2px);
-        height: calc(100vw / 3 - 2px);
+    .left-stack:not(.left-split-small) {
+        .boxes {
+            grid-template-columns: repeat(3, 1fr);
+        }
+
+        .font-block {
+            width: 100%;
+            max-width: 100%;
+            height: auto;
+        }
     }
 
     .left-split {
         gap: 1px;
     }
-    
+
     .left-split-small {
-        .font-block {
-            width: calc(30dvw - 2px);
-            max-width: calc(30dvw - 2px);
-            height: calc(30dvw - 2px);
+        .boxes {
+            grid-template-columns: 1fr;
         }
+
+        .font-block {
+            width: 100%;
+            max-width: 100%;
+            height: auto;
+        }
+
         .bubble-header {
             margin-right: 0 !important;
         }
@@ -203,6 +232,19 @@
 
         .dropdown-header {
             flex: auto;
+        }
+    }
+
+    .left-split-small {
+
+        .pagination {
+            flex-direction: column;
+            div {
+                width: calc(100% - 4px);
+            }
+            button {
+                width: 100%;
+            }
         }
     }
 }

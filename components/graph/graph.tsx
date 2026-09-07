@@ -31,12 +31,16 @@ const PALETTE = [
   '#8D9C9E',
   '#889188',
   '#9EE37D',
-  '#FF5154',
   '#b97abc',
+  '#D2D7DF',
+  '#c5a7a1',
+  '#b48eb5',
+  '#8A897C',
+  '#c1baa1',
 ];
 
 function colorForIndex(i: number): string {
-  return PALETTE[i % PALETTE.length];
+  return PALETTE[(i * i + (i%5)) % PALETTE.length];
 }
 
 type GraphResult = SiteResult | FontResult | undefined;

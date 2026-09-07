@@ -445,7 +445,20 @@ export default function FontSearchForm() {
             </div>
           }
           <div className='search-col'>
-            <div className='text'>filter</div>
+            <div className='search-row'>
+            <div className='text'>
+              filter
+            </div>
+            {searchingFonts && <Dropdown
+                title="title+desc"
+                value={searchVal}
+                options={["title+desc", "only title", "only description"]}
+                setterCallback={setSearchVal}
+                removeNegate
+                removeRemove
+              />}
+            </div>
+            
             <div className='search-row'>
               <input
                 type="text"
@@ -454,14 +467,7 @@ export default function FontSearchForm() {
                 placeholder='contains…'
                 onChange={(e) => setSearchString(e.target.value)}
               />
-              {searchingFonts && <Dropdown
-                title="title+desc"
-                value={searchVal}
-                options={["title+desc", "only title", "only description"]}
-                setterCallback={setSearchVal}
-                removeNegate
-                removeRemove
-              />}
+              
               {searchString.length > 0 &&
                 <button
                     type="button"
