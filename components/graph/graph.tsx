@@ -24,12 +24,12 @@ if (typeof cytoscape('layout', 'cose-bilkent') === 'undefined') {
 
 // A palette to cycle through so each bubble gets a distinct color.
 const PALETTE = [
-  '#D2D7DF',
-  '#BDBBB0',
-  '#F7CB15',
-  '#F55D3E',
-  '#8A897C',
-  '#F7F7F7',
+  '#CCB7AE',
+  '#D6CFCB',
+  '#A6808C',
+  '#6E8C78',
+  '#8D9C9E',
+  '#889188',
   '#9EE37D',
   '#FF5154',
   '#b97abc',
@@ -318,9 +318,17 @@ export default function CytoscapeGraph({
       }
     });
 
-
+  
+    let fitTimeout: ReturnType<typeof setTimeout>;
+    const ro = new ResizeObserver(() => {
+      cy.resize();
+      clearTimeout(fitTimeout);
+      fitTimeout = setTimeout(() => cy.fit(undefined, 30), 150);
+    });
+    ro.observe(containerRef.current);
   
     return () => {
+      ro.disconnect();
       cy.destroy();
       cyRef.current = null;
     };
@@ -370,12 +378,12 @@ return (
     {showBack && (
       <button
         type="button"
-        className="text button-not graph-back-btn"
-        onClick={onBack}
+        className="text img-btn"
         style={{ position: 'absolute', top: 1, left: 1, zIndex: 10 }}
+        onClick={onBack}
       >
-        ← back
-      </button>
+        <img src="back.svg" />
+    </button>
     )}
     <div ref={containerRef} style={{ width: '100%', height: '100%' }} />
   </div>

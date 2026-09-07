@@ -55,6 +55,8 @@ export default function FontSearchForm() {
 
   const [ selectedResult, setSelectedResult ] = useState<FontRow | SiteRow | null>(null);
 
+  const [ menuOpen, setMenuOpen ] = useState<boolean>(false);
+
   const searchField: SearchFieldType = useMemo(
     () => (searchVal === "title+desc" ? "td" : searchVal === "only title" ? "t" : "d"),
     [searchVal]
@@ -381,7 +383,7 @@ export default function FontSearchForm() {
 
   return (
     <>
-      <div className='right-stack'>
+      <div className={`right-stack ${!menuOpen ? 'menu-hidden' : ''}`}>
         <div className='search-row'>
           <button
             type="button"
@@ -515,11 +517,14 @@ export default function FontSearchForm() {
       <div className='left-container'>
         <div className='left-split'>
           <div className={`left-stack ${selectedResult ? 'left-split-small' : 'left-split-large'}`}>
-            <div className='search-row bubble-header'
-              style={{
-                marginRight: selectedResult ? '1px' : '0px',
-              }}
-            >
+            <div className='search-row bubble-header'>
+              <button
+                type='button'
+                className='text mobile-only'
+                onClick={() => setMenuOpen((o) => !o)}
+              >
+                {menuOpen ? "(hide filters)" : "(show filters)"}
+              </button>
               <button
                 type='button'
                 className='text'
