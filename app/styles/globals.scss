@@ -63,8 +63,9 @@ body::-webkit-scrollbar {
   padding: 1px;
   height: calc(100dvh - 2px);
   gap: 1px;
+
   & > * {
-    pointer-events: all !important;
+    pointer-events: auto;
   }
 }
 

@@ -14,13 +14,19 @@ export function Header() {
 
     useEffect(() => {
         const intervalId = setInterval(() => {
-            setCount((prevCount) => (prevCount + 1));
-            if (count % 2 == 0)
-                setBigCount((prevCount) => (prevCount + 1) % 31);
+            setCount(prev => {
+                const next = prev + 1;
+    
+                if (prev % 2 === 0) {
+                    setBigCount(big => (big + 1) % 31);
+                }
+    
+                return next;
+            });
         }, 50);
     
         return () => clearInterval(intervalId);
-    })
+    }, []);
 
     return (
         <>
