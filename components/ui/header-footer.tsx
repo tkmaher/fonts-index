@@ -50,9 +50,6 @@ export function Header() {
                 </div>
                 <div className="text" style={{flexGrow: 1}}></div>
                 <div className="header-row">
-                    <div className="text">
-                        Statistics
-                    </div>
                     <button className="text" onClick={() => setAboutHidden(!aboutHidden)}>
                         About
                     </button>
@@ -64,7 +61,7 @@ export function Header() {
 }
 
 export function Footer() {
-    const font_rows = 3248;
+    const font_rows = 3202;
     const site_rows = 7896;
     const [fontCount, setFontCount] = useState(0);
     const [siteCount, setSiteCount] = useState(0);

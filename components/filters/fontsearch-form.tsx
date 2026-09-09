@@ -554,21 +554,25 @@ export default function FontSearchForm() {
               <div className='text fillbox'/> :
               !viewMode
                 ? (results?._tag === "RowFontResult" || results?._tag == "RowSiteResult") && (
-                    <div className='boxes'>
-                      {results.data.map((row, i) => (
-                        <Block
-                          row={row}
-                          index={i}
-                          setter={async () => setSelectedResult(row)}
-                          selected={selectedResult == row}
-                          key={i}
-                        />
-                      ))}
-                      {results.data.length == 0 && (
-                        <div className='search-row'>
+                    <>
+                      {results.data.length != 0 ?
+                        <div className='boxes'>
+                          {results.data.map((row, i) => (
+                            <Block
+                              row={row}
+                              index={i}
+                              setter={async () => setSelectedResult(row)}
+                              selected={selectedResult == row}
+                              key={i}
+                            />
+                          ))}
+
+                        </div> :
+                          <div className='search-row text error'>
                             no results found
-                        </div>)}
-                    </div>
+                        </div>
+                      }
+                    </>
                   )
                   : viewMode && (
                     <CytoscapeGraph
@@ -581,7 +585,9 @@ export default function FontSearchForm() {
                     />
                 )
               }
-            {!viewMode && <Pagination submit={submit} results={results} pageIn={pageIn} disabled={isFetching}/>}
+            {!viewMode && results?.data.length != 0 &&
+              <Pagination submit={submit} results={results} pageIn={pageIn} disabled={isFetching}/>
+            }
           </div>
           {selectedResult &&
             <DisplayNav
