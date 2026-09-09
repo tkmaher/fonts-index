@@ -530,14 +530,14 @@ export default function FontSearchForm() {
                 className='text mobile-only'
                 onClick={() => setMenuOpen((o) => !o)}
               >
-                {menuOpen ? "(hide filters)" : "(show filters)"}
+                {menuOpen ? "hide filters" : "show filters"}
               </button>
               <button
                 type='button'
                 className='text'
                 onClick={handleViewSwitch}
               >
-                (switch view)
+                switch view
               </button>
               {(viewMode && searchingFonts) &&
                 <Dropdown

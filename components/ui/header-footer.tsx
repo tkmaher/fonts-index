@@ -13,6 +13,8 @@ export function Header() {
     const [ aboutHidden, setAboutHidden ] = useState(true);
 
     useEffect(() => {
+        if (!aboutHidden) return;
+    
         const intervalId = setInterval(() => {
             setCount(prev => {
                 const next = prev + 1;
@@ -26,7 +28,7 @@ export function Header() {
         }, 50);
     
         return () => clearInterval(intervalId);
-    }, []);
+    }, [aboutHidden]);
 
     return (
         <>

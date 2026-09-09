@@ -221,26 +221,33 @@ body::-webkit-scrollbar {
 
 @media (max-width: 768px) {
   body {
-    * {
-     font-size: 16px !important;
-    } 
-    .dropdown {
+      * {
+          font-size: 16px !important;
+      }
+  }
+
+  .text {
       min-height: 20px;
-    }
-    .text {
-      min-height: 18px;
-    }
-    button {
       height: 20px;
-    }
-    .img-btn {
+      box-sizing: border-box;
+  }
+
+  button {
+      height: 20px;
+      box-sizing: border-box;
+  }
+
+  .dropdown {
+      min-height: 20px;
+  }
+
+  .img-btn {
       height: 20px !important;
       width: 20px;
-    }
-    input[type="text"] {
-      min-height: 18px;
-    }
+  }
 
+  input[type="text"] {
+      min-height: 18px;
   }
     
   .row-stack {
