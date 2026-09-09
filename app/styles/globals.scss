@@ -157,10 +157,7 @@ body::-webkit-scrollbar {
   justify-content: center;
   align-items: center;
   z-index: 11;
-  opacity: 0;
-  pointer-events: none !important;
-  
-
+  opacity: 1;
   a {
     color: inherit;
   }
@@ -204,12 +201,6 @@ body::-webkit-scrollbar {
     top: 1px;
   }
 }
-
-.about-unhidden {
-  opacity: 1;
-  pointer-events: all !important;
-}
-
 
 .mobile-only {
   display: none; 

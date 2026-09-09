@@ -55,7 +55,7 @@ export function Header() {
                     </button>
                 </div>
             </div>
-            <About hidden={aboutHidden} setAboutHidden={setAboutHidden}/>
+            {!aboutHidden && <About setAboutHidden={setAboutHidden}/>}
         </>
     )
 }

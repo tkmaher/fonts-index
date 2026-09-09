@@ -1,14 +1,12 @@
 import FontClassificationChart from "@/components/ui/barchart"
 
 export default function About({
-    hidden, 
     setAboutHidden
 }: {
-    hidden: boolean,
     setAboutHidden: (hidden: boolean) => void
 }) {
     return (
-        <div className={`about ${hidden ? '' : 'about-unhidden'}`}>
+        <div className={`about`}>
             <div className="about-bg" onClick={() => setAboutHidden(true)}/>
             <button className="img-btn" onClick={() => setAboutHidden(true)}>
                 ×
@@ -36,11 +34,11 @@ export default function About({
                 <div>
                     Websites are textual, so fonts are obviously found everywhere (even the lack of font is a font), but so much else goes into creating a website that 
                     the particular font chosen is seldom the principal consideration. We may postulate that the choice of font on a website is determined by a 
-                    coalition of drives: the preconcious motivations of a single programmer or designer steer the rudder, while the unconscious 
+                    coalition of drives: the preconscious motivations of a single programmer or designer steer the rudder, while the unconscious 
                     historical consensus of millions of programmers and designers move the waves. 
                     However, this explanation says very little in relation to the actual living rhythm of digital design. 
                     In lieu of answering questions of a historical or ontological nature, I've instead focused on 
-                    creating a plain statistical document that descibes the general form that text takes on the immediate, material web. 
+                    creating a plain statistical document that describes the general form that text takes on the immediate, material web. 
                     Disassembled into numbers through analysis, the mass of information becomes easily digestible. 
                     Below are twenty website categories that have been broken down across the eight general font classifications. 
                 </div>
