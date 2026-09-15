@@ -117,6 +117,9 @@ body::-webkit-scrollbar {
   display: flex;
   justify-content: space-between;
   gap: 1px;
+  .text {
+    height: unset;
+  }
 }
 
 .right-stack {
@@ -243,7 +246,7 @@ body::-webkit-scrollbar {
 
   .img-btn {
       height: 20px !important;
-      width: 20px;
+      width: 20px !important;
   }
 
   input[type="text"] {
@@ -288,5 +291,9 @@ body::-webkit-scrollbar {
 
   .fonts-index-display {
     height: 30vh;
+  }
+
+  .dd-item {
+    height: 20px;
   }
 }

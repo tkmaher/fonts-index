@@ -213,6 +213,16 @@ export default function FontSearchForm() {
     [classification, styles, styleOr, subsets, subsetOr, searchString, searchVal, sortVal]
   );
 
+  const [isMobile, setIsMobile] = useState<boolean | null>(null);
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia("(max-width: 768px)");
+    setIsMobile(mediaQuery.matches);
+    const handler = (e: MediaQueryListEvent) => setIsMobile(e.matches);
+    mediaQuery.addEventListener("change", handler);
+    return () => mediaQuery.removeEventListener("change", handler);
+  }, []);
+
   const queryFullSites = useMemo(
     () => [
       category && `category: ${category};`,
@@ -233,9 +243,7 @@ export default function FontSearchForm() {
     }
   };
 
-  // `mode` lets callers reset toward a target mode (e.g. right before a font/site
-  // switch) instead of the mode currently in state, avoiding a second corrective
-  // setBubbleSort call afterward.
+
   const clearFilters = useCallback((mode: boolean = searchingFonts) => {
     setSearchString("");
     setSearchVal("title+desc");
@@ -323,6 +331,9 @@ export default function FontSearchForm() {
       setBubbleParams(null);
       setPageIn(1);
       setRowParams(result.right);
+      if (isMobile) {
+        setSelectedResult(null);
+      }
     },
     [clearFilters, reportDecodeError]
   );
@@ -354,6 +365,9 @@ export default function FontSearchForm() {
       setBubbleParams(null);
       setPageIn(1);
       setRowParams(result.right);
+      if (isMobile) {
+        setSelectedResult(null);
+      }
     },
     [clearFilters, reportDecodeError]
   );
@@ -368,10 +382,7 @@ export default function FontSearchForm() {
   }, [searchingFonts, clearFilters]);
 
   const graphData = bubbleParams ? bubbleResults : results;
-
-  // Skip the initial mount (INIT_ROW_FILTER already covers it) and only react
-  // to bubbleSort changes while the bubble/graph view is actually showing —
-  // otherwise this would clobber params that mode-switching just set.
+  
   const isFirstRender = useRef(true);
   useEffect(() => {
     if (isFirstRender.current) {
@@ -497,7 +508,7 @@ export default function FontSearchForm() {
         </form>
 
         <div className='search-col'>
-          <div className='search-row text' style={{width: 'auto'}}>
+          <div className='search-row text' style={{width: 'auto', height: 'unset'}}>
             {searchingFonts ? queryFull : queryFullSites}
           </div>
           <div className='search-row'>

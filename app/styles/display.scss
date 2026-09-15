@@ -177,7 +177,7 @@
 
 .fillbox {
     flex-grow: 1;
-    width: calc(100% - 4px) !important;
+    width: 100%;
 }
 
 @media (max-width: 768px) {
