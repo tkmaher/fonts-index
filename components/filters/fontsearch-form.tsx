@@ -532,17 +532,19 @@ export default function FontSearchForm() {
           )}
         </div>
       </div>
+      <button
+        type='button'
+        className='text mobile-only'
+        style={{width: '100%'}}
+        onClick={() => setMenuOpen((o) => !o)}
+      >
+        {menuOpen ? "hide filters" : "show filters"}
+      </button>
       <div className='left-container'>
         <div className='left-split'>
           <div className={`left-stack ${selectedResult ? 'left-split-small' : 'left-split-large'}`}>
             <div className='search-row bubble-header'>
-              <button
-                type='button'
-                className='text mobile-only'
-                onClick={() => setMenuOpen((o) => !o)}
-              >
-                {menuOpen ? "hide filters" : "show filters"}
-              </button>
+              
               <button
                 type='button'
                 className='text'
