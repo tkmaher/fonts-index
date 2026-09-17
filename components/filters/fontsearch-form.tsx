@@ -335,7 +335,7 @@ export default function FontSearchForm() {
         setSelectedResult(null);
       }
     },
-    [clearFilters, reportDecodeError]
+    [clearFilters, reportDecodeError, isMobile]
   );
 
   const catCallback = useCallback(
@@ -369,7 +369,7 @@ export default function FontSearchForm() {
         setSelectedResult(null);
       }
     },
-    [clearFilters, reportDecodeError]
+    [clearFilters, reportDecodeError, isMobile]
   );
 
   const handleSearchModeToggle = useCallback(() => {
