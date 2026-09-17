@@ -18,10 +18,10 @@ export default function About({
                             About
                         </div>
                         <div>
-                            <b>fonts index</b> represents an effort to catalogue and analyze the fonts used by the world's most visited websites. 
+                            <b>fonts index</b> represents an effort to catalogue the fonts used by the world's most visited websites. 
                             It was born out of my curiosity regarding the general form of text on the internet. What fonts are 
-                            used the most, and by which sites? Which are used the least? Is the visual aesthetic of the web 
-                            guided by some kind of intelligent design, or are fonts merely pragmatically chosen to suit the needs of a 
+                            used the most, and by which sites? Which are used the least? Does the visual aesthetic of the web 
+                            have an intelligent design, or are fonts merely pragmatically chosen to suit the needs of a 
                             website? How much of web design is intentional and how much is arbitrary? How different would the 
                             internet look if Times New Roman wasn't the default CSS font? 
                             If the CSS rules hadn't been so strictly codified?
@@ -49,7 +49,8 @@ export default function About({
                 </div>
                 <div>
                     Each site has had up to three fonts assigned to it. These are determined by which three fonts are referenced most frequently across the site's stylesheets, JS-rendered styles, and inline style tags.
-                    fonts index scraped <b>3202</b> fonts across <b>7896</b> sites. Default font fallbacks ("monospace", "serif", "sans serif") also count as fonts. Website data was pulled from <a href="https://majestic.com/reports/majestic-million" target="_blank">The Majestic Million</a>. 
+                    fonts index scraped <b>3202</b> fonts across <b>7896</b> sites. Default font fallbacks ("monospace", "serif", "sans serif") also count as fonts. Font descriptions may be inaccurate, and some fonts may have typos in their labels (due to weird stylesheets on the source websites).
+                    Website data was pulled from <a href="https://majestic.com/reports/majestic-million" target="_blank">The Majestic Million</a>. 
                     The top ten most-used fonts are:
                 </div>
                 <div>
