@@ -177,7 +177,7 @@
 
 .fillbox {
     flex-grow: 1;
-    width: 100%;
+    width: calc(100% - 4px) !important;
 }
 
 @media (max-width: 768px) {
@@ -247,4 +247,11 @@
             }
         }
     }
+
+    .inspector-desc {
+        width: 100%;
+    }
+
+    .fillbox {
+        width: 100%;
 }
