@@ -248,11 +248,15 @@
         }
     }
 
-    .inspector-desc {
-        width: 100% !important;
+
+
+    .font-inspector {
+        .fillbox {
+            width: 100%;
+        }
+        .inspector-desc {
+            width: 100% !important;
+        }
     }
 
-    .fillbox {
-        width: 100%;
-    }
 }
