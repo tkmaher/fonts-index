@@ -251,10 +251,7 @@
 
 
     .font-inspector {
-        .fillbox {
-            width: 100%;
-        }
-        .inspector-desc {
+        .fillbox, .inspector-desc {
             width: 100% !important;
         }
     }
